@@ -19,12 +19,15 @@ class ViewController: UIViewController {
     let forKey = "TIP_AMT"
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         tipControl.selectedSegmentIndex = defaults.integer(forKey: forKey)
+        billField.becomeFirstResponder()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,11 +49,18 @@ class ViewController: UIViewController {
     }
     
     func calcTip() {
+        tipLabel.alpha = 0
+        totalLabel.alpha = 0
         let tipPercentages = [0.18, 0.2, 0.25]
         
         let bill = Double(billField.text!)	 ?? 0
         let tip = bill * tipPercentages[tipControl.selectedSegmentIndex]
         let total = bill + tip
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.tipLabel.alpha = 1
+            self.totalLabel.alpha = 1
+        })
         
         tipLabel.text = String(format: "$%.2f", tip)
         totalLabel.text = String(format: "$%.2f", total)
